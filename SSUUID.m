@@ -7,7 +7,7 @@
 //
 
 #import "SSUUID.h"
-#import "SSKeychain.h"
+#import "JHKeychain.h"
 
 #define keychain_service @"uuid"
 #define keychain_account @"appuuid"
@@ -16,7 +16,7 @@
 
 +(NSString *)getUUID {
     
-    NSString *strUUID = [SSKeychain passwordForService:keychain_service
+    NSString *strUUID = [JHKeychain passwordForService:keychain_service
                                                account:keychain_account];
     NSError *error=nil;
     
@@ -30,7 +30,7 @@
         
         strUUID = [NSString stringWithFormat:@"%@",uuidStr];
         
-        BOOL  succcess = [SSKeychain setPassword:strUUID
+        BOOL  succcess = [JHKeychain setPassword:strUUID
                                       forService:keychain_service
                                          account:keychain_account
                                            error:&error];
@@ -40,7 +40,7 @@
         }
     }
     
-    // BOOL delete = [SSKeychain deletePasswordForService:keychain_service account:keychain_account]; // if (delete) { // // NSLog(@"delete is success"); // } NSLog(@"SSKeychain 获取不变的UUID is %@",strUUID);
+    // BOOL delete = [JHKeychain deletePasswordForService:keychain_service account:keychain_account]; // if (delete) { // // NSLog(@"delete is success"); // } NSLog(@"JHKeychain 获取不变的UUID is %@",strUUID);
     
     return strUUID;
 }

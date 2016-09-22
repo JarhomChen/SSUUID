@@ -1,15 +1,15 @@
 //
-//  SSKeychainQuery.m
-//  SSKeychain
+//  JHKeychainQuery.m
+//  JHKeychain
 //
 //  Created by Caleb Davenport on 3/19/13.
 //  Copyright (c) 2013-2014 Sam Soffes. All rights reserved.
 //
 
-#import "SSKeychainQuery.h"
-#import "SSKeychain.h"
+#import "JHKeychainQuery.h"
+#import "JHKeychain.h"
 
-@implementation SSKeychainQuery
+@implementation JHKeychainQuery
 
 @synthesize account = _account;
 @synthesize service = _service;
@@ -20,14 +20,14 @@
 @synthesize accessGroup = _accessGroup;
 #endif
 
-#ifdef SSKEYCHAIN_SYNCHRONIZATION_AVAILABLE
+#ifdef JHKeychain_SYNCHRONIZATION_AVAILABLE
 @synthesize synchronizationMode = _synchronizationMode;
 #endif
 
 #pragma mark - Public
 
 - (BOOL)save:(NSError *__autoreleasing *)error {
-	OSStatus status = SSKeychainErrorBadArguments;
+	OSStatus status = JHKeychainErrorBadArguments;
 	if (!self.service || !self.account || !self.passwordData) {
 		if (error) {
 			*error = [[self class] errorWithCode:status];
@@ -48,7 +48,7 @@
 		}
 		[query setObject:self.passwordData forKey:(__bridge id)kSecValueData];
 #if __IPHONE_4_0 && TARGET_OS_IPHONE
-		CFTypeRef accessibilityType = [SSKeychain accessibilityType];
+		CFTypeRef accessibilityType = [JHKeychain accessibilityType];
 		if (accessibilityType) {
 			[query setObject:(__bridge id)accessibilityType forKey:(__bridge id)kSecAttrAccessible];
 		}
@@ -62,7 +62,7 @@
 
 
 - (BOOL)deleteItem:(NSError *__autoreleasing *)error {
-	OSStatus status = SSKeychainErrorBadArguments;
+	OSStatus status = JHKeychainErrorBadArguments;
 	if (!self.service || !self.account) {
 		if (error) {
 			*error = [[self class] errorWithCode:status];
@@ -96,7 +96,7 @@
 	[query setObject:@YES forKey:(__bridge id)kSecReturnAttributes];
 	[query setObject:(__bridge id)kSecMatchLimitAll forKey:(__bridge id)kSecMatchLimit];
 #if __IPHONE_4_0 && TARGET_OS_IPHONE
-	CFTypeRef accessibilityType = [SSKeychain accessibilityType];
+	CFTypeRef accessibilityType = [JHKeychain accessibilityType];
 	if (accessibilityType) {
 		[query setObject:(__bridge id)accessibilityType forKey:(__bridge id)kSecAttrAccessible];
 	}
@@ -114,7 +114,7 @@
 
 
 - (BOOL)fetch:(NSError *__autoreleasing *)error {
-	OSStatus status = SSKeychainErrorBadArguments;
+	OSStatus status = JHKeychainErrorBadArguments;
 	if (!self.service || !self.account) {
 		if (error) {
 			*error = [[self class] errorWithCode:status];
@@ -170,7 +170,7 @@
 
 #pragma mark - Synchronization Status
 
-#ifdef SSKEYCHAIN_SYNCHRONIZATION_AVAILABLE
+#ifdef JHKeychain_SYNCHRONIZATION_AVAILABLE
 + (BOOL)isSynchronizationAvailable {
 #if TARGET_OS_IPHONE
 	// Apple suggested way to check for 7.0 at runtime
@@ -203,20 +203,20 @@
 	}
 #endif
 
-#ifdef SSKEYCHAIN_SYNCHRONIZATION_AVAILABLE
+#ifdef JHKeychain_SYNCHRONIZATION_AVAILABLE
 	if ([[self class] isSynchronizationAvailable]) {
 		id value;
 
 		switch (self.synchronizationMode) {
-			case SSKeychainQuerySynchronizationModeNo: {
+			case JHKeychainQuerySynchronizationModeNo: {
 			  value = @NO;
 			  break;
 			}
-			case SSKeychainQuerySynchronizationModeYes: {
+			case JHKeychainQuerySynchronizationModeYes: {
 			  value = @YES;
 			  break;
 			}
-			case SSKeychainQuerySynchronizationModeAny: {
+			case JHKeychainQuerySynchronizationModeAny: {
 			  value = (__bridge id)(kSecAttrSynchronizableAny);
 			  break;
 			}
@@ -234,47 +234,47 @@
 	NSString *message = nil;
 	switch (code) {
 		case errSecSuccess: return nil;
-		case SSKeychainErrorBadArguments: message = NSLocalizedStringFromTable(@"SSKeychainErrorBadArguments", @"SSKeychain", nil); break;
+		case JHKeychainErrorBadArguments: message = NSLocalizedStringFromTable(@"JHKeychainErrorBadArguments", @"JHKeychain", nil); break;
 
 #if TARGET_OS_IPHONE
 		case errSecUnimplemented: {
-			message = NSLocalizedStringFromTable(@"errSecUnimplemented", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecUnimplemented", @"JHKeychain", nil);
 			break;
 		}
 		case errSecParam: {
-			message = NSLocalizedStringFromTable(@"errSecParam", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecParam", @"JHKeychain", nil);
 			break;
 		}
 		case errSecAllocate: {
-			message = NSLocalizedStringFromTable(@"errSecAllocate", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecAllocate", @"JHKeychain", nil);
 			break;
 		}
 		case errSecNotAvailable: {
-			message = NSLocalizedStringFromTable(@"errSecNotAvailable", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecNotAvailable", @"JHKeychain", nil);
 			break;
 		}
 		case errSecDuplicateItem: {
-			message = NSLocalizedStringFromTable(@"errSecDuplicateItem", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecDuplicateItem", @"JHKeychain", nil);
 			break;
 		}
 		case errSecItemNotFound: {
-			message = NSLocalizedStringFromTable(@"errSecItemNotFound", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecItemNotFound", @"JHKeychain", nil);
 			break;
 		}
 		case errSecInteractionNotAllowed: {
-			message = NSLocalizedStringFromTable(@"errSecInteractionNotAllowed", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecInteractionNotAllowed", @"JHKeychain", nil);
 			break;
 		}
 		case errSecDecode: {
-			message = NSLocalizedStringFromTable(@"errSecDecode", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecDecode", @"JHKeychain", nil);
 			break;
 		}
 		case errSecAuthFailed: {
-			message = NSLocalizedStringFromTable(@"errSecAuthFailed", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecAuthFailed", @"JHKeychain", nil);
 			break;
 		}
 		default: {
-			message = NSLocalizedStringFromTable(@"errSecDefault", @"SSKeychain", nil);
+			message = NSLocalizedStringFromTable(@"errSecDefault", @"JHKeychain", nil);
 		}
 #else
 		default:
@@ -286,7 +286,7 @@
 	if (message) {
 		userInfo = @{ NSLocalizedDescriptionKey : message };
 	}
-	return [NSError errorWithDomain:kSSKeychainErrorDomain code:code userInfo:userInfo];
+	return [NSError errorWithDomain:kJHKeychainErrorDomain code:code userInfo:userInfo];
 }
 
 @end
